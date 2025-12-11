@@ -22,9 +22,15 @@ const allQuotes = [
 export function MotivationCards() {
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
   const [favorites, setFavorites] = useLocalStorage<number[]>('motivationFavorites', []);
+  const [isFlipping, setIsFlipping] = useState(false);
 
   const showNextQuote = () => {
-    setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % allQuotes.length);
+    if (isFlipping) return;
+    setIsFlipping(true);
+    setTimeout(() => {
+      setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % allQuotes.length);
+      setIsFlipping(false);
+    }, 300); // Half of the animation duration
   };
 
   const toggleFavorite = (id: number) => {
@@ -45,28 +51,41 @@ export function MotivationCards() {
         <TabsTrigger value="favorites"><Star className="mr-2 h-4 w-4" />Favorites</TabsTrigger>
       </TabsList>
       <TabsContent value="all">
-        <Card className="w-full min-h-[350px] flex flex-col">
-          <CardHeader>
-            <CardTitle>A Dose of Motivation</CardTitle>
-            <CardDescription>A little encouragement to brighten your day.</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-grow flex items-center justify-center text-center p-6">
-            <p className="text-2xl font-semibold text-foreground">
-              “{currentQuote.text}”
-            </p>
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => toggleFavorite(currentQuote.id)}
-              aria-label="Favorite"
-            >
-              <Heart className={cn("w-6 h-6", isFavorite(currentQuote.id) ? "fill-red-500 text-red-500" : "text-muted-foreground")} />
-            </Button>
-            <Button onClick={showNextQuote}>Next Quote</Button>
-          </CardFooter>
-        </Card>
+        <div className="perspective-1000">
+          <Card 
+            className={cn(
+                "w-full min-h-[350px] flex flex-col transition-transform duration-500 ease-in-out transform-style-3d",
+                isFlipping && "rotate-y-180"
+            )}
+            style={{
+                background: 'linear-gradient(to bottom, #fef9e7 0%, #fef9e7 95%, #fceecf 100%)',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08)'
+            }}
+          >
+            <div className={cn("w-full h-full flex flex-col", isFlipping && 'opacity-0')}>
+                <CardHeader>
+                    <CardTitle>A Dose of Motivation</CardTitle>
+                    <CardDescription>A little encouragement to brighten your day.</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-grow flex items-center justify-center text-center p-6">
+                    <p className="text-2xl font-semibold text-amber-900/80" style={{ fontFamily: "'Comic Sans MS', 'Chalkduster', 'cursive'" }}>
+                    “{currentQuote.text}”
+                    </p>
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                    <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => toggleFavorite(currentQuote.id)}
+                    aria-label="Favorite"
+                    >
+                    <Heart className={cn("w-6 h-6", isFavorite(currentQuote.id) ? "fill-red-500 text-red-500" : "text-muted-foreground")} />
+                    </Button>
+                    <Button onClick={showNextQuote} disabled={isFlipping}>Next Quote</Button>
+                </CardFooter>
+            </div>
+          </Card>
+        </div>
       </TabsContent>
       <TabsContent value="favorites">
         <Card className="w-full min-h-[350px]">
