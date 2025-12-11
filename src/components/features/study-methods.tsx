@@ -88,8 +88,10 @@ export function StudyMethods() {
         </CardHeader>
         <CardContent className="flex-grow">
           {state.recommendations ? (
-             <div className="prose prose-sm max-w-none text-foreground whitespace-pre-wrap font-sans">
-                {state.recommendations}
+             <div className="prose prose-sm max-w-none text-foreground">
+                <ul className="space-y-2">
+                    {state.recommendations.split('\n').map((item, index) => item.trim() && <li key={index} className="pl-2">{item.replace(/^- /, '')}</li>)}
+                </ul>
             </div>
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">
