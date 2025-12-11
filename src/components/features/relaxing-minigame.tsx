@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { DuckIcon } from '../icons/duck-icon';
-import { Confetti } from 'lucide-react';
+import { PartyPopper } from 'lucide-react';
 
 export function RelaxingMinigame() {
   const [duckPosition, setDuckPosition] = useState({ top: '50%', left: '50%' });
@@ -71,7 +71,7 @@ export function RelaxingMinigame() {
 
           {found && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
-                <Confetti className="w-16 h-16 text-accent-foreground" />
+                <PartyPopper className="w-16 h-16 text-accent-foreground" />
                 <h3 className="text-2xl font-bold mt-4">You found it!</h3>
                 {timeToFind && <p className="text-muted-foreground">It took you {timeToFind.toFixed(2)} seconds.</p>}
                 <Button onClick={newGame} className="mt-6">Play Again</Button>
