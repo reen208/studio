@@ -130,7 +130,7 @@ export function StudySchedule() {
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
                         <Button size="sm">
-                            <PlusCircle className="mr-2 h-4 w-4" /> Add Exam
+                            <PlusCircle className="mr-2 h-4 w-4" /> Add study plan
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
