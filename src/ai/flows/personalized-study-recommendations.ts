@@ -19,7 +19,7 @@ const PersonalizedStudyRecommendationsInputSchema = z.object({
 export type PersonalizedStudyRecommendationsInput = z.infer<typeof PersonalizedStudyRecommendationsInputSchema>;
 
 const PersonalizedStudyRecommendationsOutputSchema = z.object({
-  recommendations: z.string().describe('Personalized study method recommendations based on the provided information.'),
+  recommendations: z.string().describe('Personalized study method recommendations in bullet points based on the provided information.'),
 });
 export type PersonalizedStudyRecommendationsOutput = z.infer<typeof PersonalizedStudyRecommendationsOutputSchema>;
 
@@ -36,6 +36,8 @@ const prompt = ai.definePrompt({
   prompt: `You are an AI assistant designed to provide personalized study method recommendations to students.
 
   Based on the student's course, learning style, and study goals, provide tailored study method recommendations.
+  
+  Please present the recommendations in bullet points.
 
   Course: {{{course}}}
   Learning Style: {{{learningStyle}}}
