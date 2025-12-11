@@ -19,7 +19,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        headline: ['"PT Sans"', ...fontFamily.sans],
+        headline: ["var(--font-handwriting)", ...fontFamily.sans],
         body: ['"PT Sans"', ...fontFamily.sans],
         sans: ["var(--font-sans)", ...fontFamily.sans],
         handwriting: ["var(--font-handwriting)", ...fontFamily.sans],
