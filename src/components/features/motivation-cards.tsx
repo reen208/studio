@@ -51,40 +51,57 @@ export function MotivationCards() {
         <TabsTrigger value="favorites"><Star className="mr-2 h-4 w-4" />Favorites</TabsTrigger>
       </TabsList>
       <TabsContent value="all">
-        <div className="perspective-1000">
-          <Card 
-            className={cn(
-                "w-full min-h-[350px] flex flex-col transition-transform duration-500 ease-in-out transform-style-3d",
-                isFlipping && "rotate-y-180"
-            )}
-            style={{
-                background: 'linear-gradient(to bottom, #fef9e7 0%, #fef9e7 95%, #fceecf 100%)',
-                boxShadow: '0 4px 8px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08)'
-            }}
-          >
-            <div className={cn("w-full h-full flex flex-col", isFlipping && 'opacity-0')}>
-                <CardHeader>
-                    <CardTitle>A Dose of Motivation</CardTitle>
-                    <CardDescription>A little encouragement to brighten your day.</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-grow flex items-center justify-center text-center p-6">
-                    <p className="text-2xl font-semibold text-amber-900/80" style={{ fontFamily: "'Comic Sans MS', 'Chalkduster', 'cursive'" }}>
-                    “{currentQuote.text}”
-                    </p>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                    <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => toggleFavorite(currentQuote.id)}
-                    aria-label="Favorite"
-                    >
-                    <Heart className={cn("w-6 h-6", isFavorite(currentQuote.id) ? "fill-red-500 text-red-500" : "text-muted-foreground")} />
-                    </Button>
-                    <Button onClick={showNextQuote} disabled={isFlipping}>Next Quote</Button>
-                </CardFooter>
+        <div className="perspective-1000 p-4 min-h-[450px] flex items-center justify-center">
+            <div 
+              className={cn(
+                  "relative w-full max-w-md h-[350px] transition-transform duration-700 ease-in-out transform-style-3d",
+                  isFlipping && "rotate-y-180"
+              )}
+            >
+              {/* Front of the card (the clipboard note) */}
+              <div className="absolute w-full h-full backface-hidden">
+                <div className="relative w-full h-full pt-12">
+                  {/* Clipboard Clip */}
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-8 bg-slate-800 rounded-t-md flex items-center justify-center p-1 shadow-md">
+                    <div className="w-16 h-4 bg-slate-600 rounded-sm"></div>
+                  </div>
+
+                  {/* Paper Stack */}
+                  <div className="relative w-full h-full bg-white rounded-md shadow-lg
+                    before:content-[''] before:absolute before:w-[98%] before:h-full before:bg-white before:rounded-md before:shadow-lg before:-z-10 before:left-[1%] before:top-1
+                    after:content-[''] after:absolute after:w-[96%] after:h-full after:bg-white after:rounded-md after:shadow-lg after:-z-20 after:left-[2%] after:top-2"
+                  >
+                    <div className="h-full p-6 flex flex-col justify-between bg-repeat" style={{backgroundImage: `linear-gradient(to bottom, #e0e0e0 1px, transparent 1px)`, backgroundSize: '100% 2rem' }}>
+                        <div className="flex-grow flex items-center justify-center">
+                            <p className="text-2xl font-serif text-slate-800 text-center leading-relaxed">
+                                “{currentQuote.text}”
+                            </p>
+                        </div>
+                        <div className="flex justify-between items-center pt-4">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => toggleFavorite(currentQuote.id)}
+                                aria-label="Favorite"
+                            >
+                                <Heart className={cn("w-6 h-6", isFavorite(currentQuote.id) ? "fill-red-500 text-red-500" : "text-gray-400")} />
+                            </Button>
+                            <Button onClick={showNextQuote} disabled={isFlipping}>Next Quote</Button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Back of the card (blank note) */}
+              <div className="absolute w-full h-full backface-hidden rotate-y-180">
+                 <div className="relative w-full h-full pt-12">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-8 bg-slate-800 rounded-t-md"></div>
+                    <div className="relative w-full h-full bg-white rounded-md shadow-lg"></div>
+                 </div>
+              </div>
+
             </div>
-          </Card>
         </div>
       </TabsContent>
       <TabsContent value="favorites">
