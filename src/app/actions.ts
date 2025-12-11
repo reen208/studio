@@ -2,7 +2,6 @@
 
 import { getPersonalizedStudyRecommendations, type PersonalizedStudyRecommendationsInput } from "@/ai/flows/personalized-study-recommendations";
 import { getStressCopingFeedback, type StressCopingFeedbackInput } from "@/ai/flows/stress-coping-feedback";
-import { getStudyScheduleRecommendations, type StudyScheduleRecommendationsInput } from "@/ai/flows/study-schedule-recommendations";
 import { z } from "zod";
 
 const studyRecommendationsSchema = z.object({
@@ -13,10 +12,6 @@ const studyRecommendationsSchema = z.object({
 
 const stressFeedbackSchema = z.object({
   situation: z.string().min(15, "Please describe your situation in at least 15 characters."),
-});
-
-const studyScheduleSchema = z.object({
-    exams: z.string().transform((str) => JSON.parse(str)),
 });
 
 type StudyState = {
@@ -36,14 +31,6 @@ type StressState = {
       situation?: string[];
     } | null;
   };
-  
-type ScheduleState = {
-    message?: string | null;
-    schedule?: string | null;
-    errors?: {
-        exams?: string[];
-    } | null;
-};
 
 export async function generateStudyRecommendationsAction(
   prevState: StudyState,
@@ -98,36 +85,5 @@ export async function generateStressCopingFeedbackAction(
     } catch (error) {
       console.error(error);
       return { message: "An unexpected error occurred on the server." };
-    }
-}
-
-export async function generateStudyScheduleAction(
-    prevState: ScheduleState,
-    formData: FormData,
-): Promise<ScheduleState> {
-    const validatedFields = studyScheduleSchema.safeParse({
-        exams: formData.get("exams"),
-    });
-
-    if (!validatedFields.success) {
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: "Validation failed. No exams found.",
-        };
-    }
-
-    if (validatedFields.data.exams.length === 0) {
-        return { message: "Please add at least one exam to get a schedule recommendation." };
-    }
-
-    try {
-        const result = await getStudyScheduleRecommendations({ exams: validatedFields.data.exams } as StudyScheduleRecommendationsInput);
-        if (result.schedule) {
-            return { schedule: result.schedule, message: "Success!" };
-        }
-        return { message: "Could not generate a schedule. Please try again." };
-    } catch (error) {
-        console.error(error);
-        return { message: "An unexpected error occurred on the server." };
     }
 }
