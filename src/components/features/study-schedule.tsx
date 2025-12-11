@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useState, useEffect, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { generateStudyScheduleAction } from '@/app/actions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
@@ -58,7 +58,7 @@ export function StudySchedule() {
   const { toast } = useToast();
 
   const initialState = { message: null, errors: null, schedule: null };
-  const [state, dispatch] = useFormState(generateStudyScheduleAction, initialState);
+  const [state, dispatch] = useActionState(generateStudyScheduleAction, initialState);
 
   useEffect(() => {
     if (state.message && state.message !== "Success!") {

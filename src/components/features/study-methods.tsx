@@ -1,6 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { generateStudyRecommendationsAction } from "@/app/actions";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -28,7 +29,7 @@ function SubmitButton() {
 
 export function StudyMethods() {
   const initialState = { message: null, errors: null, recommendations: null };
-  const [state, dispatch] = useFormState(generateStudyRecommendationsAction, initialState);
+  const [state, dispatch] = useActionState(generateStudyRecommendationsAction, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export function StudyMethods() {
           {state.recommendations ? (
              <div className="prose prose-sm max-w-none text-foreground">
                 <ul className="space-y-2">
-                    {state.recommendations.split('\n').map((item, index) => item.trim() && <li key={index} className="pl-2">{item.replace(/^- /, '')}</li>)}
+                    {state.recommendations.split('\n').map((item, index) => item.trim() && <li key={index} className="pl-2 list-disc list-inside">{item.replace(/^- /, '')}</li>)}
                 </ul>
             </div>
           ) : (

@@ -1,12 +1,12 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { generateStressCopingFeedbackAction } from "@/app/actions";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Bot, Loader2 } from "lucide-react";
 
@@ -26,7 +26,7 @@ function SubmitButton() {
 
 export function StressConsultation() {
   const initialState = { message: null, errors: null, feedback: null };
-  const [state, dispatch] = useFormState(generateStressCopingFeedbackAction, initialState);
+  const [state, dispatch] = useActionState(generateStressCopingFeedbackAction, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
