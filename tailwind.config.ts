@@ -22,6 +22,7 @@ export default {
         headline: ['"PT Sans"', ...fontFamily.sans],
         body: ['"PT Sans"', ...fontFamily.sans],
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        handwriting: ["var(--font-handwriting)", ...fontFamily.sans],
         code: ['monospace'],
       },
       colors: {

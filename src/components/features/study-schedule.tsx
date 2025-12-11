@@ -10,6 +10,15 @@ import useLocalStorage from '@/lib/hooks/use-local-storage';
 import { PlusCircle, Trash2 } from 'lucide-react';
 import { format, isSameDay, parseISO } from 'date-fns';
 import { Label } from '../ui/label';
+import { cn } from '@/lib/utils';
+import { DuckIcon } from '../icons/duck-icon';
+import { Caveat } from 'next/font/google';
+
+const caveat = Caveat({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-handwriting',
+});
 
 type ExamEvent = {
   id: string;
@@ -48,26 +57,40 @@ export function StudySchedule() {
   const eventDays = events.map(event => parseISO(event.date));
 
   return (
-    <Card className="w-full">
+    <Card className={cn("w-full", caveat.variable)}>
       <CardHeader>
         <CardTitle>Upcoming Exams & Tests</CardTitle>
         <CardDescription>Plan your study sessions and stay organized.</CardDescription>
       </CardHeader>
       <CardContent className="grid md:grid-cols-2 gap-8">
         <div className="flex justify-center">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              className="rounded-md border"
-              modifiers={{ event: eventDays }}
-              modifiersStyles={{
-                event: {
-                  color: 'hsl(var(--primary-foreground))',
-                  backgroundColor: 'hsl(var(--primary))',
-                }
-              }}
-            />
+            <div className="relative rounded-md border bg-green-50/50 p-4 shadow-inner" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'hsla(130, 40%, 65%, 0.1)\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")', backgroundBlendMode: 'overlay'}}>
+              <div className="absolute -top-8 left-4 flex items-end gap-2">
+                <DuckIcon className="h-16 w-16 -scale-x-100 transform"/>
+                <DuckIcon className="h-20 w-20"/>
+              </div>
+               <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                className="!p-0 !border-0"
+                modifiers={{ event: eventDays }}
+                classNames={{
+                    root: 'border-0',
+                    caption_label: 'text-5xl font-bold text-green-800/80 font-handwriting',
+                    head_cell: 'text-green-800/70 font-handwriting text-2xl font-semibold w-12',
+                    cell: 'h-12 w-12',
+                    day: 'h-12 w-12 text-xl font-handwriting font-bold text-green-900/80 hover:bg-yellow-100/50 rounded-full',
+                    day_selected: 'bg-primary/80 text-primary-foreground rounded-full hover:bg-primary/90',
+                    day_today: 'bg-yellow-200/50 text-green-900 rounded-full',
+                    day_outside: 'text-green-900/30',
+                    nav_button: 'text-green-800/80 hover:text-green-900 hover:bg-yellow-100/50',
+                }}
+              />
+              <div className="absolute -bottom-6 right-4 flex items-end">
+                <DuckIcon className="h-12 w-12" />
+              </div>
+            </div>
         </div>
         <div>
           <div className="flex justify-between items-center mb-4">
