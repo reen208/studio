@@ -5,7 +5,8 @@ import { MotivationCards } from '@/components/features/motivation-cards';
 import { RelaxingMinigame } from '@/components/features/relaxing-minigame';
 import { StudySchedule } from '@/components/features/study-schedule';
 import { StudyMethods } from '@/components/features/study-methods';
-import { Heart, BrainCircuit, Calendar, Gamepad2, Wind } from 'lucide-react';
+import { StressConsultation } from '@/components/features/stress-consultation';
+import { Heart, BrainCircuit, Calendar, Gamepad2, Wind, MessageCircleQuestion } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8">
         <Tabs defaultValue="breathe" className="w-full flex flex-col items-center">
-          <TabsList className="grid w-full max-w-2xl grid-cols-2 sm:grid-cols-5 h-auto sm:h-14 p-2">
+          <TabsList className="grid w-full max-w-3xl grid-cols-3 sm:grid-cols-6 h-auto sm:h-14 p-2">
             <TabsTrigger value="breathe" className="flex flex-col sm:flex-row gap-2 h-12 text-xs sm:text-sm">
               <Wind className="w-5 h-5"/> Breathe
             </TabsTrigger>
@@ -27,7 +28,10 @@ export default function Home() {
               <Calendar className="w-5 h-5"/> Schedule
             </TabsTrigger>
             <TabsTrigger value="study" className="flex flex-col sm:flex-row gap-2 h-12 text-xs sm:text-sm">
-              <BrainCircuit className="w-5 h-5"/> Study Methods
+              <BrainCircuit className="w-5 h-5"/> Study
+            </TabsTrigger>
+            <TabsTrigger value="consult" className="flex flex-col sm:flex-row gap-2 h-12 text-xs sm:text-sm">
+              <MessageCircleQuestion className="w-5 h-5"/> Consult
             </TabsTrigger>
           </TabsList>
           <div className="w-full max-w-4xl mt-6">
@@ -45,6 +49,9 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="study">
               <StudyMethods />
+            </TabsContent>
+            <TabsContent value="consult">
+              <StressConsultation />
             </TabsContent>
           </div>
         </Tabs>

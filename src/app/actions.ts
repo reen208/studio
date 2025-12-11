@@ -1,6 +1,7 @@
 "use server";
 
 import { getPersonalizedStudyRecommendations, type PersonalizedStudyRecommendationsInput } from "@/ai/flows/personalized-study-recommendations";
+import { getStressCopingFeedback, type StressCopingFeedbackInput } from "@/ai/flows/stress-coping-feedback";
 import { z } from "zod";
 
 const studyRecommendationsSchema = z.object({
@@ -9,7 +10,12 @@ const studyRecommendationsSchema = z.object({
   studyGoals: z.string().min(10, "Study goals must be at least 10 characters."),
 });
 
-type State = {
+const stressFeedbackSchema = z.object({
+  situation: z.string().min(15, "Please describe your situation in at least 15 characters."),
+});
+
+
+type StudyState = {
   message?: string | null;
   recommendations?: string | null;
   errors?: {
@@ -19,10 +25,18 @@ type State = {
   } | null;
 };
 
+type StressState = {
+    message?: string | null;
+    feedback?: string | null;
+    errors?: {
+      situation?: string[];
+    } | null;
+  };
+
 export async function generateStudyRecommendationsAction(
-  prevState: State,
+  prevState: StudyState,
   formData: FormData,
-): Promise<State> {
+): Promise<StudyState> {
   const validatedFields = studyRecommendationsSchema.safeParse({
     course: formData.get("course"),
     learningStyle: formData.get("learningStyle"),
@@ -47,3 +61,30 @@ export async function generateStudyRecommendationsAction(
     return { message: "An unexpected error occurred on the server." };
   }
 }
+
+export async function generateStressCopingFeedbackAction(
+    prevState: StressState,
+    formData: FormData,
+  ): Promise<StressState> {
+    const validatedFields = stressFeedbackSchema.safeParse({
+      situation: formData.get("situation"),
+    });
+  
+    if (!validatedFields.success) {
+      return {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Validation failed. Please describe your situation.",
+      };
+    }
+  
+    try {
+      const result = await getStressCopingFeedback(validatedFields.data as StressCopingFeedbackInput);
+      if (result.feedback) {
+        return { feedback: result.feedback, message: "Success!" };
+      }
+      return { message: "Could not generate feedback. Please try again." };
+    } catch (error) {
+      console.error(error);
+      return { message: "An unexpected error occurred on the server." };
+    }
+  }
