@@ -11,7 +11,6 @@ import { PlusCircle, Trash2 } from 'lucide-react';
 import { format, isSameDay, parseISO } from 'date-fns';
 import { Label } from '../ui/label';
 import { cn } from '@/lib/utils';
-import { DuckIcon } from '../icons/duck-icon';
 import { Caveat } from 'next/font/google';
 
 const caveat = Caveat({
@@ -65,10 +64,6 @@ export function StudySchedule() {
       <CardContent className="grid md:grid-cols-2 gap-8">
         <div className="flex justify-center">
             <div className="relative rounded-md border bg-green-50/50 p-4 shadow-inner" style={{backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'hsla(130, 40%, 65%, 0.1)\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")', backgroundBlendMode: 'overlay'}}>
-              <div className="absolute -top-8 left-4 flex items-end gap-2">
-                <DuckIcon className="h-16 w-16 -scale-x-100 transform"/>
-                <DuckIcon className="h-20 w-20"/>
-              </div>
                <Calendar
                 mode="single"
                 selected={date}
@@ -87,9 +82,6 @@ export function StudySchedule() {
                     nav_button: 'text-green-800/80 hover:text-green-900 hover:bg-yellow-100/50',
                 }}
               />
-              <div className="absolute -bottom-6 right-4 flex items-end">
-                <DuckIcon className="h-12 w-12" />
-              </div>
             </div>
         </div>
         <div>
